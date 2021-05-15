@@ -22,7 +22,7 @@ const main = async () => {
 		child_process.execSync(
 			`git clone https://arn4v:${process.env.GITHUB_PAT}@github.com/arn4v/onetab-backup ${clonePath}`,
 			{
-				stdio: [0, 1, 2], // we need this so node will print the command output
+				// stdio: [0, 1, 2], // we need this so node will print the command output
 			}
 		);
 		fs.copyFileSync(ogDbPath, dbPath);
@@ -61,8 +61,9 @@ const main = async () => {
 		} catch (err) {
 			console.log(err);
 		}
+		conn.close();
+		fs.rmSync(dbPath);
 		fs.rmSync(clonePath, { recursive: true, force: true });
-		fs.rmSync(dbPath, { force: true });
 	};
 
 	sendEmail();
